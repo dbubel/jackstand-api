@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+
+  localstack-s3:
+    image: localstack/localstack:0.11.4
+    container_name: localstack-s3
+    environment:
+      - SERVICES=s3:5002
+      - AWS_DEFAULT_REGION=us-east-1
+      - DATA_DIR=/tmp/localstack/data
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=foo
+    ports:
+      - "5002:5002"
+      - "9999:8080"
+    volumes:
+      - localstack-data:/tmp/localstack
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./default.dev.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 443:443
+
+  jackstand:
+    image: golang:latest
+    volumes:
+      - .:/go/src/jackstand
+    working_dir: /go/src/jackstand
+    environment:
+      - PORT=${PORT:-4000}
+      - FIREBASE_API_KEY=${PORT:-key}
+      - S3_BUCKET=${S3_BUCKET:-jackstand-test}
+    command: go run main.go serve local
+    ports:
+      - 4000:4000
+
+volumes:
+  localstack-data:
+    name: localstack-data
+
+
+
+
+
+
