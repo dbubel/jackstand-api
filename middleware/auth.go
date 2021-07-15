@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bf-dbubel/intake"
+	"github.com/dbubel/intake"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/julienschmidt/httprouter"
 )

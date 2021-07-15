@@ -8,7 +8,7 @@ import (
 	"math/rand"
 	"time"
 
-	cacher "github.com/bf-dbubel/cacheflow"
+	cacher "github.com/dbubel/cacheflow"
 
 	"io/ioutil"
 	"net/http"
@@ -17,9 +17,9 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/bf-dbubel/intake"
-	"github.com/bf-dbubel/models"
-	"github.com/bf-dbubel/s3"
+	"github.com/dbubel/intake"
+	"github.com/dbubel/models"
+	"github.com/dbubel/s3"
 	"github.com/brianvoe/gofakeit"
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"

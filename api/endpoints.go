@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/bf-dbubel/intake"
+	"github.com/dbubel/intake"
 )
 
 func endpoints(c Credentials) intake.Endpoints {

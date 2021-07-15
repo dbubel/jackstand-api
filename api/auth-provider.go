@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/bf-dbubel/intake"
+	"github.com/dbubel/intake"
 	"github.com/julienschmidt/httprouter"
 )
 

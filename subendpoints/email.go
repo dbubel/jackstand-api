@@ -3,7 +3,7 @@ package subendpoints
 import (
 	"net/http"
 
-	"github.com/bf-dbubel/intake"
+	"github.com/dbubel/intake"
 )
 
 func EmailFromClaims(w http.ResponseWriter, r *http.Request, next func(email string)) {

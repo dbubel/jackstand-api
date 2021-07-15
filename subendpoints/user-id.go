@@ -3,7 +3,7 @@ package subendpoints
 import (
 	"net/http"
 
-	"github.com/bf-dbubel/intake"
+	"github.com/dbubel/intake"
 )
 
 func UserIdFromClaims(w http.ResponseWriter, r *http.Request, next func(userId string)) {

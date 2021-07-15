@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/bf-dbubel/api"
-	"github.com/bf-dbubel/config"
+	"github.com/dbubel/api"
+	"github.com/dbubel/config"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/mitchellh/cli"
 	"github.com/sirupsen/logrus"

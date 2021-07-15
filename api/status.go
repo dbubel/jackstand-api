@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/bf-dbubel/intake"
+	"github.com/dbubel/intake"
 	"github.com/julienschmidt/httprouter"
 )
 

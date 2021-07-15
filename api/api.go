@@ -8,10 +8,10 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	cacher "github.com/bf-dbubel/cacheflow"
-	"github.com/bf-dbubel/config"
-	"github.com/bf-dbubel/intake"
-	"github.com/bf-dbubel/middleware"
+	cacher "github.com/dbubel/cacheflow"
+	"github.com/dbubel/config"
+	"github.com/dbubel/intake"
+	"github.com/dbubel/middleware"
 	"github.com/sirupsen/logrus"
 )
 
