@@ -219,7 +219,7 @@ func TestCreateCredential(t *testing.T) {
 		body, _ := ioutil.ReadAll(w.Body)
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 		assert.JSONEq(t,
-			`{"description":null,"error":",{Username:required}"}`,
+			`{"description":null,"error":"field Username required type: string"}`,
 			string(body),
 		)
 
@@ -242,7 +242,7 @@ func TestCreateCredential(t *testing.T) {
 		body, _ := ioutil.ReadAll(w.Body)
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 		assert.JSONEq(t,
-			`{"description":null,"error":",{Password:required}"}`,
+			`{"description":null,"error":"field Password required type: string"}`,
 			string(body),
 		)
 
@@ -265,7 +265,7 @@ func TestCreateCredential(t *testing.T) {
 		body, _ := ioutil.ReadAll(w.Body)
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 		assert.JSONEq(t,
-			`{"description":null,"error":",{Service:required}"}`,
+			`{"description":null,"error":"field Service required type: string"}`,
 			string(body),
 		)
 

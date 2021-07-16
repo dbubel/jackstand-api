@@ -9,8 +9,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	cacher "github.com/dbubel/cacheflow"
-	"github.com/dbubel/jackstand-api/config"
 	"github.com/dbubel/intake"
+	mw "github.com/dbubel/intake/middleware"
+	"github.com/dbubel/jackstand-api/config"
 	"github.com/dbubel/jackstand-api/middleware"
 	"github.com/sirupsen/logrus"
 )
@@ -95,7 +96,13 @@ func (c *ServeCommand) Run(args []string) int {
 			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
 			next(w, r, params)
 		}
-	})
+	}, mw.Recover, mw.Logging(c.Log, mw.LogLevel{
+		Log100s: true,
+		Log200s: true,
+		Log300s: true,
+		Log400s: true,
+		Log500s: true,
+	}), mw.Timeout(time.Second*5))
 
 	app.AddEndpoints(noAuthEndpoints, credentialEndpoints)
 	app.Run(&http.Server{
