@@ -17,10 +17,10 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/brianvoe/gofakeit"
 	"github.com/dbubel/intake"
 	"github.com/dbubel/models"
 	"github.com/dbubel/s3"
-	"github.com/brianvoe/gofakeit"
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
