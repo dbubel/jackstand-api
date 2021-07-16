@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/dbubel/jackstand-api/api"
 	"github.com/dbubel/jackstand-api/config"
@@ -13,7 +15,12 @@ import (
 func main() {
 	log := logrus.New()
 	log.SetLevel(logrus.DebugLevel)
-	log.SetFormatter(&logrus.JSONFormatter{})
+	log.SetReportCaller(true)
+	log.SetFormatter(&logrus.JSONFormatter{
+		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+			return "", fmt.Sprintf("%s:%d", f.File, f.Line)
+		},
+	})
 
 	var cfg config.Config
 	if err := envconfig.Process("", &cfg); err != nil {

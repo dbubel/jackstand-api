@@ -80,6 +80,25 @@ func (c *ServeCommand) Run(args []string) int {
 
 	app := intake.New(c.Log)
 
+	// Handle CORS for other requests
+	fn := func(next intake.Handler) intake.Handler {
+		return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
+			next(w, r, params)
+		}
+	}
+	loggingMw := mw.Logging(c.Log, mw.LogLevel{
+		Log100s: true,
+		Log200s: true,
+		Log300s: true,
+		Log400s: true,
+		Log500s: true,
+	})
+
+	app.GlobalMiddleware(loggingMw, fn, mw.Recover, mw.Timeout(time.Second*5))
+
 	// Handle CORS for OPTIONS
 	app.Router.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -88,21 +107,8 @@ func (c *ServeCommand) Run(args []string) int {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	// Handle CORS for other requests
-	app.GlobalMiddleware(func(next intake.Handler) intake.Handler {
-		return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
-			next(w, r, params)
-		}
-	}, mw.Recover, mw.Logging(c.Log, mw.LogLevel{
-		Log100s: true,
-		Log200s: true,
-		Log300s: true,
-		Log400s: true,
-		Log500s: true,
-	}), mw.Timeout(time.Second*5))
+
+
 
 	app.AddEndpoints(noAuthEndpoints, credentialEndpoints)
 	app.Run(&http.Server{
