@@ -9,9 +9,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	cacher "github.com/dbubel/cacheflow"
-	"github.com/dbubel/config"
+	"github.com/dbubel/jackstand-api/config"
 	"github.com/dbubel/intake"
-	"github.com/dbubel/middleware"
+	"github.com/dbubel/jackstand-api/middleware"
 	"github.com/sirupsen/logrus"
 )
 

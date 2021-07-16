@@ -17,8 +17,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dbubel/cacheflow v0.0.0-20210715184534-41c3a04c25ed h1:2iMN0MV7ypTKLUpEgyN7UoN9MOJtzlJWV3l8aS8p/pw=
 github.com/dbubel/cacheflow v0.0.0-20210715184534-41c3a04c25ed/go.mod h1:W2HsoY60LAcJmJ7oBipTM5vPz74qDiSWrVDBFrl+3Y8=
-github.com/dbubel/intake v0.0.0-20210715205202-884c839741a1 h1:7Jeu65Zfi7hKS0SDMT+WJCmrnhUxtwO6cB3thzUiXgY=
-github.com/dbubel/intake v0.0.0-20210715205202-884c839741a1/go.mod h1:bJaFh6JJO0cofDk0kUJZ/7MmJvM1OGShyFo3Upaz5ks=
+github.com/dbubel/intake v0.0.0-20210716052526-d0d46690d4ae h1:a385/ltzPjaCu5ysaty5wsR3d7QkSZH2f8x1ZihxbFs=
+github.com/dbubel/intake v0.0.0-20210716052526-d0d46690d4ae/go.mod h1:8cJ+2DIa2I04W2X+RVK+GSQ4Fl1z4Re/jsVWEpH3JmM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
