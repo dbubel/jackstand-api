@@ -107,9 +107,6 @@ func (c *ServeCommand) Run(args []string) int {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-
-
-
 	app.AddEndpoints(noAuthEndpoints, credentialEndpoints)
 	app.Run(&http.Server{
 		Addr:           fmt.Sprintf(":%d", c.Cfg.Port),
