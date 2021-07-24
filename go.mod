@@ -5,10 +5,10 @@ go 1.16
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/armon/go-radix v1.0.0 // indirect
-	github.com/aws/aws-sdk-go v1.40.5
+	github.com/aws/aws-sdk-go v1.40.7
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/dbubel/cacheflow v0.0.0-20210716172058-42c70b6ef707
-	github.com/dbubel/intake v1.0.0
+	github.com/dbubel/intake v1.0.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible

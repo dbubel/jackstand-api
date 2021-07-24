@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"time"
 
@@ -63,6 +62,16 @@ func (c *ServeCommand) Run(args []string) int {
 	//var VerifyURL = fmt.Sprintf("%s/getOobConfirmationCode?key=%s", firebaseBaseURL, apiKey)
 	//var ChangePasswordURL = fmt.Sprintf("%s/setAccountInfo?key=%s", firebaseBaseURL, apiKey)
 
+	// start to create the API
+	app := intake.New(c.Log)
+	loggingMiddleware := mw.Logging(c.Log, mw.LogLevel{
+		Log100s: true,
+		Log200s: true,
+		Log300s: true,
+		Log400s: true,
+		Log500s: true,
+	})
+
 	credentialObj := Credentials{
 		bucket: c.Cfg.S3Bucket,
 		sess:   awsSession,
@@ -75,29 +84,23 @@ func (c *ServeCommand) Run(args []string) int {
 		intake.NewEndpoint(http.MethodGet, "/status", credentialObj.status),
 	}
 
+	// Apply middlware to noAuthEndpoints group
+	noAuthEndpoints.Use(loggingMiddleware)
+
 	credentialEndpoints := endpoints(credentialObj)
 	credentialEndpoints.Use(middleware.Auth) // apply auth to credential endpoints
-
-	app := intake.New(c.Log)
+	credentialEndpoints.Use(loggingMiddleware)
 
 	// Handle CORS for other requests
-	fn := func(next intake.Handler) intake.Handler {
-		return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
-			next(w, r, params)
-		}
-	}
-	loggingMw := mw.Logging(c.Log, mw.LogLevel{
-		Log100s: true,
-		Log200s: true,
-		Log300s: true,
-		Log400s: true,
-		Log500s: true,
-	})
+	//fn := func(next intake.Handler) intake.Handler {
+	//	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	//		w.Header().Set("Access-Control-Allow-Origin", "*")
+	//		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	//		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
+	//		next(w, r, params)
+	//	}
+	//}
 
-	app.GlobalMiddleware(loggingMw, fn, mw.Recover, mw.Timeout(time.Second*5))
 
 	// Handle CORS for OPTIONS
 	app.Router.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
