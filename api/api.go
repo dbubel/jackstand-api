@@ -84,23 +84,16 @@ func (c *ServeCommand) Run(args []string) int {
 		intake.NewEndpoint(http.MethodGet, "/status", credentialObj.status),
 	}
 
-	// Apply middlware to noAuthEndpoints group
+	// Apply middleware to noAuthEndpoints group
 	noAuthEndpoints.Use(loggingMiddleware)
+	noAuthEndpoints.Use(middleware.Cors)
 
 	credentialEndpoints := endpoints(credentialObj)
-	credentialEndpoints.Use(middleware.Auth) // apply auth to credential endpoints
+
+	// Apply middleware to credentialEndpoints group
+	credentialEndpoints.Use(middleware.Auth)
 	credentialEndpoints.Use(loggingMiddleware)
-
-	// Handle CORS for other requests
-	//fn := func(next intake.Handler) intake.Handler {
-	//	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	//		w.Header().Set("Access-Control-Allow-Origin", "*")
-	//		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	//		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
-	//		next(w, r, params)
-	//	}
-	//}
-
+	credentialEndpoints.Use(middleware.Cors)
 
 	// Handle CORS for OPTIONS
 	app.Router.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
