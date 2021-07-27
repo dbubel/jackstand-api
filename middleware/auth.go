@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/dbubel/intake"
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"github.com/julienschmidt/httprouter"
 )
 

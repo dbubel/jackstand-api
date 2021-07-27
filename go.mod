@@ -9,9 +9,9 @@ require (
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/dbubel/cacheflow v0.0.0-20210716172058-42c70b6ef707
 	github.com/dbubel/intake v1.0.1
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible
+	github.com/golang-jwt/jwt v3.2.1+incompatible
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
