@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/julienschmidt/httprouter"
 	"math/rand"
 	"time"
 
@@ -42,6 +43,11 @@ func init() {
 	log = logrus.New()
 	log.SetLevel(logrus.ErrorLevel)
 }
+func FakeAuth(next intake.Handler) intake.Handler {
+	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		next(w, r, params)
+	}
+}
 func randomCredential() models.Credential {
 	return models.Credential{
 		Uid:         uuid.Must(uuid.NewV4()),
@@ -66,7 +72,7 @@ func TestGetCredential(t *testing.T) {
 	}
 
 	credentialsSlice := append([]models.Credential{}, testCredential1, testCredential2)
-	app.AddEndpoints(endpoints(credsApi))
+	app.AddEndpoints(GetCredentialEndpoints(credsApi, FakeAuth))
 	userIdFromClaims := gofakeit.Username()
 	userIdFromClaims2 := gofakeit.Username()
 	_ = userIdFromClaims2
@@ -178,7 +184,7 @@ func TestCreateCredential(t *testing.T) {
 		log:    log,
 		cache:  cacher.NewCacherDefault(),
 	}
-	app.AddEndpoints(endpoints(credsApi))
+	app.AddEndpoints(GetCredentialEndpoints(credsApi, FakeAuth))
 
 	t.Run("test creating a new credential for a user", func(t *testing.T) {
 		requestBody, _ := json.Marshal(testCredential1)
@@ -321,7 +327,7 @@ func TestUpdateCredential(t *testing.T) {
 		cache:  cacher.NewCacherDefault(),
 	}
 
-	app.AddEndpoints(endpoints(credsApi))
+	app.AddEndpoints(GetCredentialEndpoints(credsApi, FakeAuth))
 
 	var credentialToModify models.Credential
 	s3.CreateCredential(log, sess, testBucket, s3.GetKeyForSingleCredential(userIdFromClaims, testCredential1.Uid), testCredential1)

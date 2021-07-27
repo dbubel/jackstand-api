@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/dbubel/intake"
@@ -37,41 +38,44 @@ type singin struct {
 	ReturnSecureToken bool   `json:"returnSecureToken" validate:"required"`
 }
 
-func signin(singinURL string) func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+type FireBaseAuth struct {
+	ApiKey          string
+	FirebaseBaseURL string
+}
 
-		var signinReq singin
-		if err := intake.UnmarshalJSON(r.Body, &signinReq); err != nil {
-			intake.RespondError(w, r, err, http.StatusBadRequest)
-			return
-		}
-
-		defer r.Body.Close()
-		signinJSON, err := json.Marshal(signinReq)
-		if err != nil {
-			intake.RespondError(w, r, err, http.StatusBadRequest)
-			return
-		}
-
-		req, err := http.NewRequest("POST", singinURL, bytes.NewReader(signinJSON))
-		if err != nil {
-			intake.RespondError(w, r, err, http.StatusBadRequest)
-			return
-		}
-
-		res, err := http.DefaultClient.Do(req)
-		if err != nil {
-			intake.RespondError(w, r, err, http.StatusBadRequest)
-			return
-		}
-
-		var firebaseResp interface{}
-		err = json.NewDecoder(res.Body).Decode(&firebaseResp)
-		if err != nil {
-			intake.RespondError(w, r, err, http.StatusBadRequest)
-			return
-		}
-
-		intake.RespondJSON(w, r, res.StatusCode, firebaseResp)
+func (c *FireBaseAuth) Signin(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	singinURL := fmt.Sprintf("%s/verifyPassword?key=%s", c.FirebaseBaseURL, c.ApiKey)
+	var signinReq singin
+	if err := intake.UnmarshalJSON(r.Body, &signinReq); err != nil {
+		intake.RespondError(w, r, err, http.StatusBadRequest)
+		return
 	}
+
+	defer r.Body.Close()
+	signinJSON, err := json.Marshal(signinReq)
+	if err != nil {
+		intake.RespondError(w, r, err, http.StatusBadRequest)
+		return
+	}
+
+	req, err := http.NewRequest("POST", singinURL, bytes.NewReader(signinJSON))
+	if err != nil {
+		intake.RespondError(w, r, err, http.StatusBadRequest)
+		return
+	}
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		intake.RespondError(w, r, err, http.StatusBadRequest)
+		return
+	}
+
+	var firebaseResp interface{}
+	err = json.NewDecoder(res.Body).Decode(&firebaseResp)
+	if err != nil {
+		intake.RespondError(w, r, err, http.StatusBadRequest)
+		return
+	}
+	intake.RespondJSON(w, r, res.StatusCode, firebaseResp)
+
 }

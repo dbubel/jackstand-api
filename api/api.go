@@ -54,9 +54,9 @@ func (c *ServeCommand) Run(args []string) int {
 		c.Log.WithError(err).Fatalln()
 	}
 
-	var apiKey = c.Cfg.FirebaseApiKey
-	var firebaseBaseURL = "https://www.googleapis.com/identitytoolkit/v3/relyingparty"
-	var SigninURL = fmt.Sprintf("%s/verifyPassword?key=%s", firebaseBaseURL, apiKey)
+	//var apiKey = c.Cfg.FirebaseApiKey
+	//var firebaseBaseURL = "https://www.googleapis.com/identitytoolkit/v3/relyingparty"
+	//var SigninURL = fmt.Sprintf("%s/verifyPassword?key=%s", firebaseBaseURL, apiKey)
 	//var CreateURL = fmt.Sprintf("%s/signupNewUser?key=%s", firebaseBaseURL, apiKey)
 	//var DeleteURL = fmt.Sprintf("%s/deleteAccount?key=%s", firebaseBaseURL, apiKey)
 	//var VerifyURL = fmt.Sprintf("%s/getOobConfirmationCode?key=%s", firebaseBaseURL, apiKey)
@@ -64,36 +64,6 @@ func (c *ServeCommand) Run(args []string) int {
 
 	// start to create the API
 	app := intake.New(c.Log)
-	loggingMiddleware := mw.Logging(c.Log, mw.LogLevel{
-		Log100s: true,
-		Log200s: true,
-		Log300s: true,
-		Log400s: true,
-		Log500s: true,
-	})
-
-	credentialObj := Credentials{
-		bucket: c.Cfg.S3Bucket,
-		sess:   awsSession,
-		log:    c.Log,
-		cache:  cacher.NewCacherDefault(),
-	}
-
-	noAuthEndpoints := intake.Endpoints{
-		intake.NewEndpoint(http.MethodPost, "/users/signin", signin(SigninURL)),
-		intake.NewEndpoint(http.MethodGet, "/status", credentialObj.status),
-	}
-
-	// Apply middleware to noAuthEndpoints group
-	noAuthEndpoints.Use(loggingMiddleware)
-	noAuthEndpoints.Use(middleware.Cors)
-
-	credentialEndpoints := endpoints(credentialObj)
-
-	// Apply middleware to credentialEndpoints group
-	credentialEndpoints.Use(middleware.Auth)
-	credentialEndpoints.Use(loggingMiddleware)
-	credentialEndpoints.Use(middleware.Cors)
 
 	// Handle CORS for OPTIONS
 	app.Router.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -103,7 +73,49 @@ func (c *ServeCommand) Run(args []string) int {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	app.AddEndpoints(noAuthEndpoints, credentialEndpoints)
+	// Setup log level struct
+	loglvl := mw.LogLevel{
+		Log100s: true,
+		Log200s: true,
+		Log300s: true,
+		Log400s: true,
+		Log500s: true,
+	}
+	loggingMiddleware := mw.Logging(c.Log, loglvl)
+
+	// Setup firebaseEndpoints struct
+	fb := FireBaseAuth{
+		ApiKey:          c.Cfg.FirebaseApiKey,
+		FirebaseBaseURL: c.Cfg.FirebaseURL,
+	}
+
+	// Setup GetCredentialEndpoints from the firebaseEndpoints struct and apply middleware
+	firebaseEndpoints := GetUserManagementEndpoints(fb)
+	firebaseEndpoints.Use(loggingMiddleware)
+	firebaseEndpoints.Use(middleware.Cors)
+	firebaseEndpoints.Use(mw.Recover)
+
+	// Setup the Credentials struct
+	creds := Credentials{
+		bucket: c.Cfg.S3Bucket,
+		sess:   awsSession,
+		log:    c.Log,
+		cache:  cacher.NewCacherDefault(),
+	}
+
+	// Setup GetCredentialEndpoints from  middleware to GetCredentialEndpoints group
+	credentialEndpoints := GetCredentialEndpoints(creds, middleware.Auth)
+	credentialEndpoints.Use(loggingMiddleware)
+	credentialEndpoints.Use(middleware.Cors)
+	credentialEndpoints.Use(mw.Recover)
+
+	// Add all the GetCredentialEndpoints to the application router
+	app.AddEndpoints(
+		firebaseEndpoints,
+		credentialEndpoints,
+	)
+
+	// Run the server
 	app.Run(&http.Server{
 		Addr:           fmt.Sprintf(":%d", c.Cfg.Port),
 		Handler:        app.Router,
