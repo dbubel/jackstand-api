@@ -85,18 +85,15 @@ func (c *ServeCommand) Run(args []string) int {
 	app.AddGlobal(loggingMiddleware)
 	app.AddGlobal(mw.Recover)
 	app.AddGlobal(middleware.Cors)
+	app.AddGlobal(mw.Timeout(time.Second * 5))
 
 	// Setup firebaseEndpoints struct
 	fb := FireBaseAuth{
 		ApiKey:          c.Cfg.FirebaseApiKey,
 		FirebaseBaseURL: c.Cfg.FirebaseURL,
 	}
-
 	// Setup GetCredentialEndpoints from the firebaseEndpoints struct and apply middleware
 	firebaseEndpoints := GetUserManagementEndpoints(fb)
-
-
-
 
 	// Setup the Credentials struct
 	creds := Credentials{
@@ -105,11 +102,8 @@ func (c *ServeCommand) Run(args []string) int {
 		log:    c.Log,
 		cache:  cacher.NewCacherDefault(),
 	}
-
 	// Setup GetCredentialEndpoints from  middleware to GetCredentialEndpoints group
 	credentialEndpoints := GetCredentialEndpoints(creds, middleware.Auth)
-
-
 	// Add all the GetCredentialEndpoints to the application router
 	app.AddEndpoints(
 		firebaseEndpoints,
