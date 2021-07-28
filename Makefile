@@ -32,6 +32,5 @@ start:
 
 stop:
 	docker-compose -f docker-compose.prod.yml down
-	docker system prune -f --volumes -a
 
 
