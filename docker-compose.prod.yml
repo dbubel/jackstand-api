@@ -20,7 +20,7 @@ services:
       - PORT=${PORT:-4000}
       - FIREBASE_API_KEY=${FIREBASE_API_KEY:-key}
       - S3_BUCKET=${S3_BUCKET:-jackstand}
-    command: go run main.go serve
+    command: go clean -modcache && go mod tidy && go mod vendor && go run main.go serve
 
     # ports:
     #   - 4000:4000
