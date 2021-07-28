@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go v1.40.7
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/dbubel/cacheflow v0.0.0-20210716172058-42c70b6ef707
-	github.com/dbubel/intake v1.0.1
+	github.com/dbubel/intake v1.0.2-0.20210728002352-9e25f98acd7f
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang-jwt/jwt v3.2.1+incompatible

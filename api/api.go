@@ -82,6 +82,9 @@ func (c *ServeCommand) Run(args []string) int {
 		Log500s: true,
 	}
 	loggingMiddleware := mw.Logging(c.Log, loglvl)
+	app.AddGlobal(loggingMiddleware)
+	app.AddGlobal(mw.Recover)
+	app.AddGlobal(middleware.Cors)
 
 	// Setup firebaseEndpoints struct
 	fb := FireBaseAuth{
@@ -91,9 +94,9 @@ func (c *ServeCommand) Run(args []string) int {
 
 	// Setup GetCredentialEndpoints from the firebaseEndpoints struct and apply middleware
 	firebaseEndpoints := GetUserManagementEndpoints(fb)
-	firebaseEndpoints.Use(loggingMiddleware)
-	firebaseEndpoints.Use(middleware.Cors)
-	firebaseEndpoints.Use(mw.Recover)
+
+
+
 
 	// Setup the Credentials struct
 	creds := Credentials{
@@ -105,9 +108,7 @@ func (c *ServeCommand) Run(args []string) int {
 
 	// Setup GetCredentialEndpoints from  middleware to GetCredentialEndpoints group
 	credentialEndpoints := GetCredentialEndpoints(creds, middleware.Auth)
-	credentialEndpoints.Use(loggingMiddleware)
-	credentialEndpoints.Use(middleware.Cors)
-	credentialEndpoints.Use(mw.Recover)
+
 
 	// Add all the GetCredentialEndpoints to the application router
 	app.AddEndpoints(

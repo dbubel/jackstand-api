@@ -19,8 +19,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dbubel/cacheflow v0.0.0-20210716172058-42c70b6ef707 h1:8dhjNcIo/9tk4Ro6ingYfx59EoExRrXSLTJgxa0lyCA=
 github.com/dbubel/cacheflow v0.0.0-20210716172058-42c70b6ef707/go.mod h1:GJOgtX69CTcVO3Tx514H2qGMb58G48AHtsPM23ZjV3A=
-github.com/dbubel/intake v1.0.1 h1:sREKMOHS+POtg7ZJfAG9JmQb2dUUm3uWxHaTMPvPqM4=
-github.com/dbubel/intake v1.0.1/go.mod h1:7J/KX6c5iHj6W/JS9Blr3nsj6evt4K/7i1xNMnQlL/o=
+github.com/dbubel/intake v1.0.2-0.20210728002352-9e25f98acd7f h1:u9i6pVQR5DRCo9HRS+JZAqNuQs2DSeeFfVNJcLjmjD4=
+github.com/dbubel/intake v1.0.2-0.20210728002352-9e25f98acd7f/go.mod h1:7J/KX6c5iHj6W/JS9Blr3nsj6evt4K/7i1xNMnQlL/o=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/fatih/color v1.12.0 h1:mRhaKNwANqRgUBGKmnI5ZxEk7QXmjQeCcuYFMX2bfcc=
 github.com/fatih/color v1.12.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
