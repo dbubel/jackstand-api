@@ -118,6 +118,7 @@ func Auth(next intake.Handler) intake.Handler {
 
 		ctx := context.WithValue(r.Context(), "userId", localId)
 		ctx = context.WithValue(ctx, "email", email)
-		next(w, r.WithContext(ctx), params)
+		*r = *r.WithContext(ctx)
+		next(w, r, params)
 	}
 }
