@@ -9,8 +9,6 @@ import (
 	"math/rand"
 	"time"
 
-	cacher "github.com/dbubel/cacheflow"
-
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -68,7 +66,7 @@ func TestGetCredential(t *testing.T) {
 		bucket: testBucket,
 		sess:   sess,
 		log:    log,
-		cache:  cacher.NewCacherDefault(),
+		//cache:  cacher.NewCacherDefault(),
 	}
 
 	credentialsSlice := append([]models.Credential{}, testCredential1, testCredential2)
@@ -182,7 +180,7 @@ func TestCreateCredential(t *testing.T) {
 		bucket: testBucket,
 		sess:   sess,
 		log:    log,
-		cache:  cacher.NewCacherDefault(),
+		//cache:  cacher.NewCacherDefault(),
 	}
 	app.AddEndpoints(GetCredentialEndpoints(credsApi, FakeAuth))
 
@@ -324,7 +322,7 @@ func TestUpdateCredential(t *testing.T) {
 		bucket: testBucket,
 		sess:   sess,
 		log:    log,
-		cache:  cacher.NewCacherDefault(),
+		//cache:  cacher.NewCacherDefault(),
 	}
 
 	app.AddEndpoints(GetCredentialEndpoints(credsApi, FakeAuth))

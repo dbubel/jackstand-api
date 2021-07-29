@@ -7,7 +7,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	cacher "github.com/dbubel/cacheflow"
 	"github.com/dbubel/intake"
 	mw "github.com/dbubel/intake/middleware"
 	"github.com/dbubel/jackstand-api/config"
@@ -100,7 +99,7 @@ func (c *ServeCommand) Run(args []string) int {
 		bucket: c.Cfg.S3Bucket,
 		sess:   awsSession,
 		log:    c.Log,
-		cache:  cacher.NewCacherDefault(),
+		//cache:  cacher.NewCacherDefault(),
 	}
 	// Setup GetCredentialEndpoints from  middleware to GetCredentialEndpoints group
 	credentialEndpoints := GetCredentialEndpoints(creds, middleware.Auth)

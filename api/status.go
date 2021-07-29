@@ -27,7 +27,7 @@ func (c *Credentials) status(w http.ResponseWriter, r *http.Request, _ httproute
 	}{
 		Alloc:      bToMb(m.Alloc),
 		TotalAlloc: bToMb(m.TotalAlloc),
-		CacheItems: c.cache.NumElements(),
-		BuildTime:  BuildTime,
+		//CacheItems: c.cache.NumElements(),
+		BuildTime: BuildTime,
 	})
 }
