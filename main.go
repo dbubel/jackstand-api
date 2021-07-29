@@ -1,25 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"runtime"
-
 	"github.com/dbubel/jackstand-api/api"
 	"github.com/dbubel/jackstand-api/config"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/mitchellh/cli"
 	"github.com/sirupsen/logrus"
+	"os"
 )
 
 func main() {
 	log := logrus.New()
 	log.SetLevel(logrus.DebugLevel)
-	log.SetReportCaller(true)
+	//log.SetReportCaller(true)
 	log.SetFormatter(&logrus.JSONFormatter{
-		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
-			return "", fmt.Sprintf("%s:%d", f.File, f.Line)
-		},
+		//CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+		//	return "", fmt.Sprintf("%s:%d", f.File, f.Line)
+		//},
 	})
 
 	var cfg config.Config

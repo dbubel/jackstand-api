@@ -23,6 +23,8 @@ type Credentials struct {
 	cache  *cacher.Cacher
 }
 
+const NOT_FOUND = "error listing credentials list no results found"
+
 func (c *Credentials) updateUsername(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	subendpoints.UserIdFromClaims(w, r, func(userId string) {
 		subendpoints.CredentialIdFromParams(w, r, params, func(credentialUid uuid.UUID) {
@@ -206,6 +208,10 @@ func (c *Credentials) getCredentials(w http.ResponseWriter, r *http.Request, _ h
 
 		// Check S3 for the credentials
 		if err := s3.GetCredentials(ctx, c.log, c.sess, c.bucket, objectKey, &ts); err != nil {
+			if err.Error() == NOT_FOUND {
+				intake.Respond(w, r, http.StatusNoContent, nil)
+				return
+			}
 			intake.RespondError(w, r, err, http.StatusInternalServerError)
 			return
 		}

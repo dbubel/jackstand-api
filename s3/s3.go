@@ -57,6 +57,10 @@ func List(ctx context.Context, log *logrus.Logger, sess *session.Session, bucket
 		return &s3.ListObjectsOutput{}, fmt.Errorf("error listing credentials %w", err)
 	}
 
+	if len(result.Contents) < 1 {
+		return &s3.ListObjectsOutput{}, fmt.Errorf("no results found")
+	}
+
 	for i := range result.Contents {
 		log.WithFields(logrus.Fields{"objectKey": *result.Contents[i].Key}).Debug("found object in s3 list")
 	}
