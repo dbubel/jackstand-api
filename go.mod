@@ -7,8 +7,7 @@ require (
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/aws/aws-sdk-go v1.40.10
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
-	github.com/dbubel/cacheflow v0.0.0-20210716172058-42c70b6ef707
-	github.com/dbubel/intake v1.0.2
+	github.com/dbubel/intake v1.0.3-0.20210730182852-52207a194371
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang-jwt/jwt v3.2.1+incompatible

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/dbubel/intake"
-	mw "github.com/dbubel/intake/middleware"
+
 	"github.com/dbubel/jackstand-api/config"
 	"github.com/dbubel/jackstand-api/middleware"
 	"github.com/sirupsen/logrus"
@@ -72,19 +72,11 @@ func (c *ServeCommand) Run(args []string) int {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	// Setup log level struct
-	loglvl := mw.LogLevel{
-		Log100s: true,
-		Log200s: true,
-		Log300s: true,
-		Log400s: true,
-		Log500s: true,
-	}
-	loggingMiddleware := mw.Logging(c.Log, loglvl)
-	app.AddGlobal(loggingMiddleware)
-	app.AddGlobal(mw.Recover)
+	//app.AddGlobal(loggingMiddleware)
+	app.AddGlobal(app.Logging)
+	app.AddGlobal(app.Recover)
 	app.AddGlobal(middleware.Cors)
-	app.AddGlobal(mw.Timeout(time.Second * 5))
+	app.AddGlobal(app.Timeout(time.Second * 5))
 
 	// Setup firebaseEndpoints struct
 	fb := FireBaseAuth{

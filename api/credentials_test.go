@@ -322,7 +322,6 @@ func TestUpdateCredential(t *testing.T) {
 		bucket: testBucket,
 		sess:   sess,
 		log:    log,
-		//cache:  cacher.NewCacherDefault(),
 	}
 
 	app.AddEndpoints(GetCredentialEndpoints(credsApi, FakeAuth))
