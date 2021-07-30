@@ -99,7 +99,6 @@ func (c *ServeCommand) Run(args []string) int {
 		bucket: c.Cfg.S3Bucket,
 		sess:   awsSession,
 		log:    c.Log,
-		//cache:  cacher.NewCacherDefault(),
 	}
 	// Setup GetCredentialEndpoints from  middleware to GetCredentialEndpoints group
 	credentialEndpoints := GetCredentialEndpoints(creds, middleware.Auth)
