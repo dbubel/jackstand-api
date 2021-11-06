@@ -36,8 +36,9 @@ func (ct CustomTime) MarshalJSON() ([]byte, error) {
 
 // String returns the time in the custom format
 func (ct *CustomTime) String() string {
+	loc, _ := time.LoadLocation("America/New_York")
 	t := time.Time(*ct)
-	return fmt.Sprintf("%q", t.Format(ctLayout))
+	return fmt.Sprintf("%q", t.In(loc).Format(ctLayout))
 }
 
 //

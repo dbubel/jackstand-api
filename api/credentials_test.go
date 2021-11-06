@@ -41,11 +41,13 @@ func init() {
 	log = logrus.New()
 	log.SetLevel(logrus.ErrorLevel)
 }
+
 func FakeAuth(next intake.Handler) intake.Handler {
 	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		next(w, r, params)
 	}
 }
+
 func randomCredential() models.Credential {
 	return models.Credential{
 		Uid:         uuid.Must(uuid.NewV4()),
@@ -66,7 +68,6 @@ func TestGetCredential(t *testing.T) {
 		bucket: testBucket,
 		sess:   sess,
 		log:    log,
-		//cache:  cacher.NewCacherDefault(),
 	}
 
 	credentialsSlice := append([]models.Credential{}, testCredential1, testCredential2)
